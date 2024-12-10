@@ -1,0 +1,15 @@
+﻿Column Name,Plot Name,Description
+NAME,Sample,Sample ID used to link metadata and Operational Taxonomic Unit output matrix
+experiment,Experiment,"There's a lot of experiments on this datasheet. I realized too late I should have cleaned this up. ""Rewilded_Vs_Lab"" is the experiment for the final project"
+treatment,Sample Type,"Treatment of interest for a given experiment. ""Sample Type"" is for lab-reared and rewilded flies in the rewilding experiment"
+material,Material,"Denotes what type of material was sequenced, usually whole flies or fly frass"
+species,Species,Species of fly or plant material 
+sex,Sex,"Male , Female, or NA depending on experiment"
+timepoint,Timepoint,collection points in time after emergence or the start of an experiment
+vial_number,Vial Number,ID Number of vial for specific groups of flies
+vial_combo,Vial Combination,"Merged  treatment and vial number for select experiments (I did not know how to do this when I made this data sheet, but I do now!)"
+egg_number,Egg Number,Number of Eggs counted in dissected ovaries prior to amplicon sequencing. 
+egg_level,"Egg Level (Hi, Med, Lo)","Egg number partitioned into high, medium, or low levels"
+combo,NA,Merged treatment and timepoint for select experiments
+location,Collection Location,"Location sample was collected. UHM denotes a lab fly collection, Ekahanui, Palikea or Manoa_Cliff denotes a field collection."
+sequence_date,Sequencing Data,Date the samples were initially sequenced (two rounds of sequencing) 
