@@ -1,5 +1,5 @@
 # Konicek_Final
-Konicek OCN683 Independent Project
+Konicek OCN682 Independent Project
 date: "2024/12/10"
 
 This repository is for my final project. 
