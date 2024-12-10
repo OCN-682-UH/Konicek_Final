@@ -32,19 +32,22 @@ Finally, the beta diversity PCoA shows how distinct the sample type communities 
 
 # Contents of Repository 
 
-_Data_ 
+_Data_. 
+
 1. OTU matrix as output by Mother (.shared)
 2. taxonomy table that corresonds to OTU matrix, output by Mother (.taxonomy)
 3. metadata file for samples (.csv)
 4. data dictionary (.csv)
 
-_Scripts_
+_Scripts_.  
+
 I tried my little grubby hands at a **xaringan**. 
 There is a markdown file, an html file, and a file of photos for the presentation.
 It was NOT AS EASY as blasting out a powerpoint! 
 But I am glad I tried. I am a little worried I should have stuck all my photos in the data folder, but this made the easiest path to the **xaringan**. 
 
-_Output_ 
+_Output_. 
+
 There are three .png plots. beta1-1.png is a beta diversity PCoA plot I made using my microbiome data. depth-1.png is a histogram of my sequence reads per sample. relabnd-1.png is a relative abundance bar plot per sample for the top 10 genera (plus taxa that have an "Unknown" genus.). 
 
 Ok. I think that is all. I hope this is helpful. 
