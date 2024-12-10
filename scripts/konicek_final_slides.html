@@ -126,12 +126,37 @@ depth &lt;- metadata %&gt;%
   geom_histogram(bins = 30) +
   scale_x_continuous(breaks=seq(0,25000,1500)) +
   scale_y_continuous(breaks=seq(0,2,1)) +
-  theme(axis.text.x.bottom = element_text(size = 10, angle = 60, hjust = .7, vjust = .7)) +
-  scale_fill_discrete(labels=c('Lab Only Flies', 'Rewilded Flies')) +
+  theme(axis.text.x.bottom = element_text(size = 10, angle = 60, hjust = .7, vjust = .7),
+    panel.border = element_rect(colour = "black", fill = NA, linetype = 1),
+    # color background 2)
+    panel.background = element_rect(fill = "white"),
+    # modify grid 3)
+    panel.grid.major.x = element_line(colour = "black", linetype = 1, size = 0.5),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y =  element_line(colour = "black", linetype = 1, size = 0.5),
+    panel.grid.minor.y = element_blank(),
+    # modify text, axis and colour 4) and 5)
+    axis.text = element_text(colour = "black"),
+    axis.title = element_text(colour = "black"),
+    axis.ticks = element_line(colour = "black"),
+    # legend at the bottom 6)
+    legend.position = "bottom") +
+  scale_fill_discrete(labels=c('Lab Reared Flies', 'Rewilded Flies')) +
   labs(title = "Sequencing Depth",
        x = "Number of reads per sample",
        y = "Samples with x number of reads",
        fill = "Sample Type") 
+```
+
+```
+## Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+## ℹ Please use the `linewidth` argument instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
+
+``` r
 depth
 ```
 
@@ -139,17 +164,59 @@ depth
 ---
 
 ## Sequencing depth histogram- how did my samples sequence?
+.pull-center[
 
 ``` r
 depth
 ```
 
 ![](konicek_final_slides_files/figure-html/fig1-1.png)&lt;!-- --&gt;
+]
+
+---
+# Beta Diversity using PCoA ordination
+
+``` r
+dist = phyloseq::distance(ps_rewild, method="bray", binary = TRUE) #Measure dissimilarity between samples
+ordination = ordinate(ps_rewild, method="PCoA", distance=dist) # ordinate those dissimilarity measurements onto a Principle Coordinate Analysis Plot
+beta &lt;- plot_ordination(ps_rewild, ordination, color ="treatment") + #plot_ordination starts the plot
+  theme_classic() +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linetype = 1),
+    # color background 2)
+    panel.background = element_rect(fill = "white"),
+    # modify grid 3)
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    # modify text, axis and colour 4) and 5)
+    axis.text = element_text(colour = "black"),
+    axis.title = element_text(colour = "black"),
+    axis.ticks = element_line(colour = "black"),
+    # legend at the bottom 6)
+    legend.position = "bottom") +
+  geom_point() +
+  stat_ellipse(aes(group = treatment), level = 0.95, linetype = 2) +
+  scale_color_discrete(breaks = c("Lab_Only", "rewilded"), name = "Sample Type", labels = c("Lab Reared Flies", "Rewilded Flies")) +
+  labs(title = "Fly microbiome composition differs by sample type",
+       caption = "PCoA using Bray-Curtis dissimiliarity")
+beta
+```
+
+![](../output/beta1-1.png)&lt;!-- --&gt;
 
 
 ---
 
-# Relative Abundance Bar Plot from a Phyloseq Object
+
+
+``` r
+beta
+```
+
+![](konicek_final_slides_files/figure-html/beta-1.png)&lt;!-- --&gt;
+
+---
+
+# Final Figure: Relative Abundance Bar Plot from a Phyloseq Object
 merge asvs to shared Genus, and get relative abundance of top 11 taxa (10 known plus unknown genera)
 
 ``` r
@@ -162,7 +229,7 @@ df$Genus &lt;- gsub("NA", "Unknown Genera", df$Genus) #Let's say "Unknown Genera
 ```
 
 ---
-# Relative Abundance Bar Plot from a Phyloseq Object
+# Final Figure: Relative Abundance Bar Plot from a Phyloseq Object
 
 ``` r
 plotm &lt;- df %&gt;%
@@ -176,9 +243,13 @@ plotm &lt;- df %&gt;%
   scale_y_continuous(labels = percent) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
-        strip.background = element_blank()) +
+        axis.ticks.y = element_line(colour = "grey"),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(colour= "grey"),
+        panel.background = element_rect(fill = NA),
+        strip.background = element_rect(colour = "black", fill = "white")) +
   labs(title = "Microbiome Profiles: Lab Reared vs. Rewilded",
-       x = "Fly microbiome profiles",
+       x = "Individual fly microbiome profiles",
        y = "Relative abundance of taxa") +
   facet_grid(~treatment,labeller = as_labeller(c(`Lab_Only` = "Lab Reared Flies", `rewilded` = "Rewilded Flies")))
 plotm
@@ -198,35 +269,7 @@ plotm
 
 
 ---
-# Final Figure: Beta Diversity using PCoA ordination
 
-``` r
-dist = phyloseq::distance(ps_rewild, method="bray", binary = TRUE) #Measure dissimilarity between samples
-ordination = ordinate(ps_rewild, method="PCoA", distance=dist) # ordinate those dissimilarity measurements onto a Principle Coordinate Analysis Plot
-beta &lt;- plot_ordination(ps_rewild, ordination, color ="treatment") + #plot_ordination starts the plot
-  theme_classic() +
-  theme(strip.background = element_blank()) +
-  geom_point() +
-  stat_ellipse(aes(group = treatment), level = 0.95, linetype = 2) +
-  scale_color_discrete(breaks = c("Lab_Only", "rewilded"), name = "Sample Type", labels = c("Lab Reared Flies", "Rewilded Flies")) +
-  labs(title = "Fly microbiome composition differs by sample type",
-       caption = "PCoA using Bray-Curtis dissimiliarity")
-beta
-```
-
-![](../output/beta1-1.png)&lt;!-- --&gt;
-
-
----
-
-
-``` r
-beta
-```
-
-![](konicek_final_slides_files/figure-html/beta-1.png)&lt;!-- --&gt;
-
----
 # Conclusions
 Flies that stayed in the lab sure have different microbiomes compared to flies that lived in the wild! 
 
@@ -236,7 +279,7 @@ These stats are Real Bad and we have learned nothing quantifiable, but I learned
 
 class: center, middle
 
-# Mahalo!
+# Mahalo
 
 Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
 
